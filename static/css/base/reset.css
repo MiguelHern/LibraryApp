@@ -1,0 +1,47 @@
+/* CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    line-height: 1.15; /* Establece un alto de línea normal */
+    -webkit-text-size-adjust: 100%; /* Evita el ajuste de tamaño de texto en móviles */
+}
+
+body {
+    margin: 0;
+}
+
+/* Establece estilos para encabezados y párrafos */
+h1, h2, h3, h4, h5, h6 {
+    font-size: inherit; /* Hereda el tamaño de fuente */
+    font-weight: inherit; /* Hereda el peso de fuente */
+}
+
+p {
+    margin: 0; /* Elimina el margen predeterminado */
+}
+
+ul {
+    list-style: none; /* Elimina los estilos de lista predeterminados */
+}
+
+a {
+    text-decoration: none; /* Elimina el subrayado de los enlaces */
+    color: inherit; /* Hereda el color del texto */
+}
+
+button {
+    background: none; /* Elimina el fondo del botón */
+    border: none; /* Elimina el borde del botón */
+    padding: 0; /* Elimina el padding */
+    cursor: pointer; /* Cambia el cursor a puntero */
+}
+
+table {
+    border-collapse: collapse; /* Elimina el espacio entre celdas */
+}
+
+/* Opcional: Puedes agregar estilos adicionales aquí */

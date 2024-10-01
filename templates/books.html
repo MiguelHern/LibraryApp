@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+</head>
+<body>
+    <h1 class="text-xl text-center">Books</h1>
+
+    <!-- Botón para abrir el modal de agregar usuario -->
+    <div class="flex justify-end">
+        <button id="openModal" class="bg-blue-500 text-white px-4 py-2 rounded">Agregar usuario</button>
+    </div>
+
+    <!-- Modal para agregar usuario -->
+    <div id="myModal" class="fixed inset-0 hidden bg-gray-800 bg-opacity-50 flex justify-center items-center z-10">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 class="text-2xl font-semibold mb-4 text-center">Agregar Usuario</h2>
+            <form action="/users" method="POST">
+                <div class="flex flex-col gap-2 ">
+                    <input type="text" name="user_name" placeholder="User Name" required>
+                    <input type="text" name="major" placeholder="Major">
+                    <input type="email" name="email" placeholder="Email">
+                    <input type="text" name="phone_number" placeholder="Phone Number">
+                    <input type="text" name="address" placeholder="Address">
+                </div>
+        
+                <div class="flex justify-between mt-4">
+                    <button class="bg-gray-700 text-white px-4 py-2 rounded" type="submit">Add User</button>
+                    <button id="closeModal" type="button" class="bg-red-500 text-white px-4 py-2 rounded">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para editar usuario -->
+    <div id="editModal" class="fixed inset-0 hidden bg-gray-800 bg-opacity-50 flex justify-center items-center z-10">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 class="text-2xl font-semibold mb-4 text-center">Editar Usuario</h2>
+            <form id="editForm" method="POST">
+                <input type="hidden" name="_method" value="PUT">
+                <input id="edit_user_name" type="text" name="user_name" placeholder="User Name" required>
+                <input id="edit_major" type="text" name="major" placeholder="Major">
+                <input id="edit_email" type="email" name="email" placeholder="Email">
+                <input id="edit_phone_number" type="text" name="phone_number" placeholder="Phone Number">
+                <input id="edit_address" type="text" name="address" placeholder="Address">
+                <div>
+                    <button type="submit">Update User</button>
+                    <button id="closeEditModal" type="button" class="bg-red-500 text-white px-4 py-2 rounded">Cerrar</button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+
+    <div class="relative overflow-x-auto">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Libro</th>
+                    <th scope="col" class="px-6 py-3">Autor</th>
+                    <th scope="col" class="px-6 py-3">Año de publicación</th>
+                    <th scope="col" class="px-6 py-3">ISBN</th>
+                    <th scope="col" class="px-6 py-3">Préstamos</th>
+                    <th scope="col" class="px-6 py-3">Estado del préstamo</th>
+                    <th scope="col" class="px-6 py-3">Editar</th>
+                    <th scope="col" class="px-6 py-3">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Don Quijote de la Mancha
+                    </th>
+                    <td class="px-6 py-4">Miguel de Cervantes</td>
+                    <td class="px-6 py-4">1605</td>
+                    <td class="px-6 py-4">123-456-789</td>
+                    <td class="px-6 py-4">Juan Pérez</td>
+                    <td class="px-6 py-4">Prestado</td>
+                    <td class="px-6 py-4">
+                        <button class="text-blue-500 hover:underline" onclick="openEditModal(this)">Edit</button>
+                    </td>
+                    <td class="px-6 py-4">
+                        <form method="POST">
+                            <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        To Kill a Mockingbird
+                    </th>
+                    <td class="px-6 py-4">Harper Lee</td>
+                    <td class="px-6 py-4">1960</td>
+                    <td class="px-6 py-4">234-567-890</td>
+                    <td class="px-6 py-4">Ana García</td>
+                    <td class="px-6 py-4">Prestado</td>
+                    <td class="px-6 py-4">
+                        <button class="text-blue-500 hover:underline" onclick="openEditModal(this)">Edit</button>
+                    </td>
+                    <td class="px-6 py-4">
+                        <form method="POST">
+                            <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        La insoportable levedad del ser
+                    </th>
+                    <td class="px-6 py-4">Milan Kundera</td>
+                    <td class="px-6 py-4">1984</td>
+                    <td class="px-6 py-4">456-789-123</td>
+                    <td class="px-6 py-4">Carla López</td>
+                    <td class="px-6 py-4">Prestado</td>
+                    <td class="px-6 py-4">
+                        <button class="text-blue-500 hover:underline" onclick="openEditModal(this)">Edit</button>
+                    </td>
+                    <td class="px-6 py-4">
+                        <form method="POST">
+                            <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Brave New World
+                    </th>
+                    <td class="px-6 py-4">Aldous Huxley</td>
+                    <td class="px-6 py-4">1932</td>
+                    <td class="px-6 py-4">789-123-456</td>
+                    <td class="px-6 py-4">Carla López</td>
+                    <td class="px-6 py-4">Prestado</td>
+                    <td class="px-6 py-4">
+                        <button class="text-blue-500 hover:underline" onclick="openEditModal(this)">Edit</button>
+                    </td>
+                    <td class="px-6 py-4">
+                        <form method="POST">
+                            <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        
+    </div>
+
+    <script>
+        // Obtener los elementos
+        const modal = document.getElementById('myModal');
+        const editModal = document.getElementById('editModal');
+        const openModalBtn = document.getElementById('openModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const closeEditModalBtn = document.getElementById('closeEditModal');
+
+        // Abrir el modal de agregar usuario
+        openModalBtn.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+        });
+
+        // Cerrar el modal de agregar usuario
+        closeModalBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        // Cerrar el modal de edición
+        closeEditModalBtn.addEventListener('click', () => {
+            editModal.classList.add('hidden');
+        });
+
+        // Cerrar el modal al hacer clic fuera de la caja de contenido
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+            }
+            if (e.target === editModal) {
+                editModal.classList.add('hidden');
+            }
+        });
+
+        // Abrir el modal de edición
+        function openEditModal(button) {
+            // Obtener los datos del botón
+            const userId = button.getAttribute('data-id');
+            const userName = button.getAttribute('data-name');
+            const userMajor = button.getAttribute('data-major');
+            const userEmail = button.getAttribute('data-email');
+            const userPhone = button.getAttribute('data-phone');
+            const userAddress = button.getAttribute('data-address');
+
+            // Llenar los campos del modal de edición
+            document.getElementById('edit_user_name').value = userName;
+            document.getElementById('edit_major').value = userMajor;
+            document.getElementById('edit_email').value = userEmail;
+            document.getElementById('edit_phone_number').value = userPhone;
+            document.getElementById('edit_address').value = userAddress;
+
+            // Establecer la acción del formulario de edición
+            document.getElementById('editForm').action = `/users/${userId}`;
+
+            // Mostrar el modal de edición
+            editModal.classList.remove('hidden');
+        }
+    </script>
+    
+</body>
+</html>
+{% endblock %}
